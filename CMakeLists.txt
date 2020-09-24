@@ -31,6 +31,7 @@ set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libexpat1")
 set(CPACK_DEBIAN_PACKAGE_SECTION "devel")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/jezhiggins/arabica")
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
 
 set(CPACK_RPM_PACKAGE_LICENSE "BSD 3-clause")
 set(CPACK_RPM_PACKAGE_URL "https://github.com/jezhiggins/arabica")

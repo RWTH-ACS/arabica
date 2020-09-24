@@ -1,0 +1,45 @@
+name: package build workflow
+# https://www.patriksvensson.se/2020/03/creating-release-artifacts-with-github-actions/
+# https://github.community/t5/GitHub-Actions/Using-on-push-tags-ignore-and-paths-ignore-together/td-p/38559
+# https://github.com/softprops/action-gh-release
+# https://github.com/actions/download-artifact
+
+on:
+  push:
+    tags:
+      - 'release/v*'
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    name: A job to build the packages
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build
+      id:   build-it-now
+      uses: ./
+    - name: UploadRPM
+      uses: actions/upload-artifact@v2
+      with:
+        name: rpm
+        path: ${{ github.workspace }}/build/*.rpm
+    - name: UploadDEB
+      uses: actions/upload-artifact@v2
+      with:
+        name: deb
+        path: ${{ github.workspace }}/build/*.deb
+  release:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+    - name: GetArtifact
+      uses: actions/download-artifact@v2
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          rpm/*
+          deb/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
